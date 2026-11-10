@@ -12,21 +12,23 @@ type ParticleWavesProps = {
   particleOpacity?: number;
   depth?: number;
   colorPalette?: string[];
-  /** Detiene la animación si la sección no está visible (IntersectionObserver) */
   pauseWhenHidden?: boolean;
+  /** Si es true, dibuja las partículas sobre un fondo ligeramente más visible */
+  glow?: boolean;
 };
 
 export function ParticleWaves({
   className = "",
-  particleCount = 90,
-  waveAmplitude = 40,
-  waveFrequency = 0.012,
-  waveSpeed = 0.8,
-  particleSize = 2.2,
-  particleOpacity = 0.55,
-  depth = 1,
-  colorPalette = ["#9E84DB", "#6243A8", "#140042", "#DBCCFF"],
+  particleCount = 140,
+  waveAmplitude = 70,
+  waveFrequency = 0.008,
+  waveSpeed = 0.5,
+  particleSize = 3,
+  particleOpacity = 0.6,
+  depth = 1.2,
+  colorPalette = ["#DBCCFF", "#9E84DB", "#6243A8", "#B9A5EA"],
   pauseWhenHidden = true,
+  glow = true,
 }: ParticleWavesProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rafRef = useRef<number | null>(null);
@@ -40,7 +42,6 @@ export function ParticleWaves({
 
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReduced) {
-      canvas.style.opacity = "0.15";
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       return;
     }
@@ -76,18 +77,18 @@ export function ParticleWaves({
 
     const initParticles = () => {
       particles = [];
-      const count = Math.max(20, Math.floor(particleCount * (width / 1440)));
+      const count = Math.max(40, Math.floor(particleCount * (width / 1440)));
       for (let i = 0; i < count; i++) {
         particles.push({
           x: Math.random() * width,
           y: Math.random() * height,
           baseY: Math.random() * height,
-          vx: (Math.random() - 0.5) * 0.4,
-          size: Math.random() * particleSize + 0.8,
-          opacity: Math.random() * particleOpacity + 0.2,
+          vx: (Math.random() - 0.5) * 0.3,
+          size: Math.random() * particleSize + 1.5,
+          opacity: Math.random() * particleOpacity + 0.25,
           color: colorPalette[Math.floor(Math.random() * colorPalette.length)],
           phase: Math.random() * Math.PI * 2,
-          depth: Math.random() * depth + 0.3,
+          depth: Math.random() * depth + 0.4,
         });
       }
     };
@@ -101,16 +102,40 @@ export function ParticleWaves({
 
       const time = t * 0.001 * waveSpeed;
 
-      for (const p of particles) {
+      // Dibujar partículas de atrás hacia adelante (profundidad)
+      const sorted = [...particles].sort((a, b) => a.depth - b.depth);
+
+      for (const p of sorted) {
         const wave =
           Math.sin(time + p.phase + p.x * waveFrequency) * waveAmplitude * p.depth;
         const y = p.baseY + wave;
 
+        // Suavizar bordes con un gradiente radial por partícula
+        const gradient = ctx.createRadialGradient(
+          p.x,
+          y,
+          0,
+          p.x,
+          y,
+          p.size * 2.5
+        );
+        gradient.addColorStop(0, p.color);
+        gradient.addColorStop(1, "transparent");
+
         ctx.beginPath();
         ctx.arc(p.x, y, p.size * p.depth, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.globalAlpha = p.opacity * p.depth;
+        ctx.fillStyle = glow ? gradient : p.color;
+        ctx.globalAlpha = glow ? p.opacity * p.depth : p.opacity * p.depth * 0.7;
         ctx.fill();
+
+        // Brillo adicional sobre partículas más cercanas
+        if (glow && p.depth > 0.8) {
+          ctx.beginPath();
+          ctx.arc(p.x, y, p.size * p.depth * 0.6, 0, Math.PI * 2);
+          ctx.fillStyle = "#DBCCFF";
+          ctx.globalAlpha = p.opacity * 0.4;
+          ctx.fill();
+        }
       }
 
       rafRef.current = requestAnimationFrame(draw);
@@ -128,7 +153,7 @@ export function ParticleWaves({
             isVisible = entries[0]?.isIntersecting ?? true;
             if (isVisible && !rafRef.current) loop(0);
           },
-          { rootMargin: "10% 0%" }
+          { rootMargin: "15% 0%" }
         )
       : null;
 
@@ -143,7 +168,18 @@ export function ParticleWaves({
       window.removeEventListener("resize", resize);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [particleCount, waveAmplitude, waveFrequency, waveSpeed, particleSize, particleOpacity, depth, colorPalette, pauseWhenHidden]);
+  }, [
+    particleCount,
+    waveAmplitude,
+    waveFrequency,
+    waveSpeed,
+    particleSize,
+    particleOpacity,
+    depth,
+    colorPalette,
+    pauseWhenHidden,
+    glow,
+  ]);
 
   return (
     <canvas

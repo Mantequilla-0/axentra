@@ -87,18 +87,19 @@ export function Hero() {
         className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-b from-transparent to-ink"
       />
 
-      {/* Particle Waves (Efecto 02) en hero */}
-      <div className="particle-wrap absolute inset-0 -z-5 overflow-hidden">
+      {/* Particle Waves (Efecto 02) en hero — visibles sobre el fondo oscuro */}
+      <div className="particle-wrap absolute inset-0 z-0 overflow-hidden">
         <ParticleWaves
           className="absolute inset-0 w-full h-full"
-          particleCount={110}
-          waveAmplitude={55}
-          waveFrequency={0.009}
-          waveSpeed={0.7}
-          particleSize={2.4}
-          particleOpacity={0.5}
-          colorPalette={["#9E84DB", "#6243A8", "#DBCCFF", "#140042"]}
+          particleCount={160}
+          waveAmplitude={60}
+          waveFrequency={0.008}
+          waveSpeed={0.6}
+          particleSize={3}
+          particleOpacity={0.55}
+          colorPalette={["#DBCCFF", "#9E84DB", "#6243A8", "#B9A5EA"]}
           pauseWhenHidden={false}
+          glow={true}
         />
       </div>
       <GrainOverlay className="inset-0 -z-10" opacity={0.04} inset />
