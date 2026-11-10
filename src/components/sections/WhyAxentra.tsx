@@ -1,3 +1,5 @@
+"use client";
+
 import {
   LayoutTemplate,
   MessageSquare,
@@ -6,34 +8,36 @@ import {
   Target,
   TrendingUp,
 } from "lucide-react";
-import { Reveal } from "@/components/ui/Reveal";
+import { FadeUp } from "@/components/effects/FadeUp";
 import { differentiators } from "@/content/services";
 
-const icons = {
+const icons: Record<string, React.ElementType> = {
   shapes: Shapes,
   layout: LayoutTemplate,
   sparkles: Sparkles,
   message: MessageSquare,
   trending: TrendingUp,
   target: Target,
-} as const;
+};
 
 export function WhyAxentra() {
   return (
     <section id="por-que" className="relative overflow-hidden py-24 sm:py-32">
       <div className="container-x relative">
-        <div className="relative overflow-hidden rounded-[2rem] border border-lav-400/12 bg-[linear-gradient(155deg,#170546_0%,#0c0226_45%,#07030f_100%)] px-6 py-12 grain sm:px-10 sm:py-16 lg:px-14">
+        <div
+          className="relative overflow-hidden rounded-[2rem] border border-lav-400/12 bg-[linear-gradient(155deg,#170546_0%,#0c0226_45%,#07030f_100%)] px-6 py-12 grain sm:px-10 sm:py-16 lg:px-14"
+        >
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -right-24 -top-24 size-80 rounded-full bg-violet-500/20 blur-[90px]"
+            className="orb -right-24 -top-24 size-80 rounded-full bg-violet-500/20 blur-[90px]"
           />
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 dot-grid opacity-30"
+            className="dot-grid absolute inset-0 opacity-30 pointer-events-none"
           />
 
           <div className="relative grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
-            <Reveal>
+            <FadeUp>
               <p className="eyebrow">Por qué AXENTRA</p>
               <h2 className="h2 mt-6 max-w-[15ch]">
                 Tecnología con propósito.{" "}
@@ -45,14 +49,13 @@ export function WhyAxentra() {
                 No se trata de usar la tecnología más reciente, sino la que
                 resuelve tu necesidad de la forma más clara y sostenible.
               </p>
-            </Reveal>
+            </FadeUp>
 
             <ul className="grid gap-x-8 gap-y-8 sm:grid-cols-2">
               {differentiators.map((item, index) => {
                 const Icon = icons[item.icon as keyof typeof icons];
                 return (
-                  <Reveal
-                    as="li"
+                  <FadeUp
                     key={item.title}
                     delay={60 + index * 60}
                     className="group"
@@ -70,7 +73,7 @@ export function WhyAxentra() {
                         </p>
                       </div>
                     </div>
-                  </Reveal>
+                  </FadeUp>
                 );
               })}
             </ul>
