@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ParticleWaves } from "@/components/effects/ParticleWaves";
+import { InteractiveParticleWaves } from "@/components/effects/InteractiveParticleWaves";
 import { GrainOverlay } from "@/components/effects/GrainOverlay";
 import { FadeUp } from "@/components/effects/FadeUp";
 import { siteConfig } from "@/config/site";
@@ -87,19 +87,22 @@ export function Hero() {
         className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-b from-transparent to-ink"
       />
 
-      {/* Particle Waves (Efecto 02) en hero — visibles sobre el fondo oscuro */}
+      {/* Interactive Particle Waves (Efecto 02) en hero — ondas + mouse */}
       <div className="particle-wrap absolute inset-0 z-0 overflow-hidden">
-        <ParticleWaves
+        <InteractiveParticleWaves
           className="absolute inset-0 w-full h-full"
-          particleCount={160}
-          waveAmplitude={60}
-          waveFrequency={0.008}
-          waveSpeed={0.6}
-          particleSize={3}
+          particleCount={260}
+          waveAmplitude={55}
+          waveFrequency={0.007}
+          waveSpeed={0.55}
+          particleSize={2.5}
           particleOpacity={0.55}
           colorPalette={["#DBCCFF", "#9E84DB", "#6243A8", "#B9A5EA"]}
+          mouseRadius={260}
+          mouseStrength={70}
+          connections={true}
+          connectionDistance={130}
           pauseWhenHidden={false}
-          glow={true}
         />
       </div>
       <GrainOverlay className="inset-0 -z-10" opacity={0.04} inset />
