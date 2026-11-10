@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, MessageCircle } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
+import { ParticleWaves } from "@/components/effects/ParticleWaves";
 import { whatsappHref } from "@/config/site";
 
 export function CtaBand() {
@@ -35,6 +36,21 @@ export function CtaBand() {
         aria-hidden="true"
         className="aurora pointer-events-none absolute left-1/2 top-0 -z-10 h-[320px] w-[720px] -translate-x-1/2 rounded-full bg-violet-500/25 blur-[120px]"
       />
+
+      {/* Particle Waves (Efecto 02) en sección de transición CTA */}
+      <div className="particle-wrap absolute inset-0 -z-5 overflow-hidden">
+        <ParticleWaves
+          className="absolute inset-0 w-full h-full"
+          particleCount={80}
+          waveAmplitude={35}
+          waveFrequency={0.008}
+          waveSpeed={0.5}
+          particleSize={2}
+          particleOpacity={0.4}
+          colorPalette={["#9E84DB", "#6243A8", "#DBCCFF"]}
+          pauseWhenHidden={false}
+        />
+      </div>
 
       <div className="container-x relative">
         <Reveal className="mx-auto max-w-2xl text-center">

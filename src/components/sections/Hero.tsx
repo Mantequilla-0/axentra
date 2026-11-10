@@ -88,16 +88,16 @@ export function Hero() {
       />
 
       {/* Particle Waves (Efecto 02) en hero */}
-      <div className="particle-wrap absolute inset-0 -z-10 overflow-hidden">
+      <div className="particle-wrap absolute inset-0 -z-5 overflow-hidden">
         <ParticleWaves
           className="absolute inset-0 w-full h-full"
-          particleCount={70}
-          waveAmplitude={45}
-          waveFrequency={0.01}
-          waveSpeed={0.6}
-          particleSize={2}
-          particleOpacity={0.45}
-          colorPalette={["#9E84DB", "#6243A8", "#140042", "#DBCCFF"]}
+          particleCount={110}
+          waveAmplitude={55}
+          waveFrequency={0.009}
+          waveSpeed={0.7}
+          particleSize={2.4}
+          particleOpacity={0.5}
+          colorPalette={["#9E84DB", "#6243A8", "#DBCCFF", "#140042"]}
           pauseWhenHidden={false}
         />
       </div>
